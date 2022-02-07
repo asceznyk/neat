@@ -1,7 +1,7 @@
 var imgbird = new Image();
 imgbird.src = 'images/bird.png';
 
-function map_range(val, flow, fhigh, tlow, thigh) {
+function mapRange(val, flow, fhigh, tlow, thigh) {
 	return (val/(fhigh - flow)) * (thigh - tlow);
 }
 
@@ -83,11 +83,11 @@ class Bird {
 
 	selectmove(NPil) {
 	  let vis = [];
-	  vis[0] = map_range(NPil.x, this.x, winwidth, 0, 1);
-	  vis[1] = map_range(NPil.holey, 0, winheight, 0, 1);
-	  vis[2] = map_range(NPil.holey+NPil.holelength, 0, winheight, 0, 1);
-	  vis[3] = map_range(this.y, 0, winheight, 0, 1);
-	  vis[4] = map_range(this.velocity, -5, 5, 0, 1);
+	  vis[0] = mapRange(NPil.x, this.x, winwidth, 0, 1);
+	  vis[1] = mapRange(NPil.holey, 0, winheight, 0, 1);
+	  vis[2] = mapRange(NPil.holey+NPil.holelength, 0, winheight, 0, 1);
+	  vis[3] = mapRange(this.y, 0, winheight, 0, 1);
+	  vis[4] = mapRange(this.velocity, -5, 5, 0, 1);
 	  let action = this.model.predict(vis).outputs;
 	  if(action[1] > action[0]) {
 	    this.animatebird('flap');
