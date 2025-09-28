@@ -22,31 +22,27 @@ var NearestPillar = function(Cols) {
 }
 
 var flappybird = function(g) {
-
   var points = document.getElementById("score");
   var generations = document.getElementById("generations");
-
   if(g >= 50) {
     return false;
   }
-
   var Pillars = [new Column(300, 0), new Column(460, 0)];
   var clearindexs, collision, fallhndle;
-
-  var PoleAnimation = setInterval(function(){
+  var PoleAnimation = setInterval(function() {
     for(let Pil = 0; Pil < Pillars.length; Pil++) {
       Pillars[Pil].animatepole();
       if(Pillars[Pil].x <= -20) {
         Pillars[Pil].x = 300;
-        Pillars[Pil].holey = calcol(Pillars[Pil].length, Pillars[Pil].holelength);
+        Pillars[Pil].holey = calcol(
+          Pillars[Pil].length,
+          Pillars[Pil].holelength
+        );
       }
     }
-
     let NPil = NearestPillar(Pillars);
-
     collision = FlappyNEAT.operatepopulation('collide', [NPil], true, 'dead');
     fallhndle = FlappyNEAT.operatepopulation('fall', [], true, 'dead');
-
     if(collision.bool == true || fallhndle.bool == true) {
       if(collision.bool == true && fallhndle.bool == false) {
         clearindexs = collision.ids;
@@ -58,9 +54,7 @@ var flappybird = function(g) {
         FlappyNEAT.population[clearindexs[cl]].dead = true;
       }
     }
-
     var aliveindices = FlappyNEAT.checkpopulation('dead');
-
     if(aliveindices.length <= 0) {
       for(let r = 0; r < Pillars.length; r++) {
         Pillars[r].erase();

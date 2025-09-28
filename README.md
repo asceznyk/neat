@@ -1,4 +1,4 @@
-# Neuro Evolution Augmented Topologies #
+# Neuro Evolution Augmented Topologies
 Examples of NEAT written in vanilla JavaScript.
 
 

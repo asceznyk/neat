@@ -15,17 +15,20 @@ class Column {
     this.holey = calcol(this.length, this.holelength);
     this.id = 0;
   }
-
   erase() {
     ctx.clearRect(this.x, 0, this.width, this.length);
   }
-
   draw() {
     ctx.beginPath();
     ctx.drawImage(imgpole, this.x, 0, this.width, this.holey)
-    ctx.drawImage(imgpole, this.x, this.holey+this.holelength, this.width, (this.length-(this.holey+this.holelength)));
+    ctx.drawImage(
+      imgpole, 
+      this.x,
+      this.holey+this.holelength,
+      this.width,
+      (this.length-(this.holey+this.holelength))
+    );
   }
-
   animatepole() {
     this.erase();
     this.x -= 1;

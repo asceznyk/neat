@@ -21,14 +21,15 @@ var nearestbomb = function(ship, bombs) {
   var nearestdist = winmaxdist;
   for(let j = 0; j < bombs.length; j++) {
     if(bombs[j].y < winheight-60) {
-      let dist = Math.sqrt((Math.pow((ship.x-bombs[j].x),2)+Math.pow((ship.y-bombs[j].y),2)));
+      let dist = Math.sqrt(
+        (Math.pow((ship.x-bombs[j].x),2)+Math.pow((ship.y-bombs[j].y),2))
+      );
       if(dist <= nearestdist) {
         nearestdist = dist;
         nearestdists.unshift(dist);
       }
     }
   }
-
   if(nearestdists.length >= 5) {
     nearestdists.splice(5);
   }
@@ -39,7 +40,9 @@ var nearestalien = function(ship, aliens) {
   var nearestdists = [];
   var nearestdist = 6000;
   for(let i = 0; i < aliens.length; i++) {
-    let dist = Math.sqrt((Math.pow((ship.x-aliens[i].x),2)+Math.pow((ship.y-aliens[i].y),2)));
+    let dist = Math.sqrt(
+      (Math.pow((ship.x-aliens[i].x),2)+Math.pow((ship.y-aliens[i].y),2))
+    );
     if(dist <= nearestdist) {
       nearestdist = dist;
       nearestdists.unshift(dist);
@@ -56,29 +59,23 @@ var nearestalien = function(ship, aliens) {
 
 var spaceinvaders = function(ship, sindex) {
   var endgen = false;
-
   if(sindex >= SpaceInvadersNEAT.maxpop) {
     SpaceInvadersNEAT.calcfitness();
     SpaceInvadersNEAT.generation('poolcrossover');
     endgen = true;
   }
-
   var aliens = initaliens();
   var time = 2;
   var missiles = [];
   var bombs = [];
-
   if(!endgen) {
     var gameanimation = setInterval(function() {
-
       var nbombdists = nearestbomb(ship, bombs);
       var naliendists = nearestalien(ship, aliens);
       var input = []
-
       for(let elem = 0; elem < nbombdists.length; elem++) {
         nbombdists[elem] /= winmaxdist;
       }
-
       if(nbombdists.length <= 0) {
         input = [0.99, 0.99, 0.99, 0.99, 0.99, (ship.x/winwidth), (ship.y/winheight)];
       } else if(nbombdists.length < 5 && nbombdists.length > 0) {
@@ -94,19 +91,15 @@ var spaceinvaders = function(ship, sindex) {
         nbombdists.push(...[(ship.x/winwidth), (ship.y/winheight)]);
         input = nbombdists;
       }
-
       ship.makeaction(input, missiles)
-
       for(var k = 0; k < missiles.length; k++) {
         missiles[k].animateshot();
       }
       ship.ghostmiss(missiles);
-
       for(var i = 0; i < aliens.length; i++) {
         if(Math.random() < 0.01) {
           aliens[i].shoot(bombs);
         }
-
         for(var l = 0; l < missiles.length; l++) {
           if(aliens[i].collide(missiles[l])) {
             missiles[l].erase();
@@ -119,12 +112,10 @@ var spaceinvaders = function(ship, sindex) {
           }
         }
       }
-
       aliens.forEach(function(entry){
         entry.ghostmiss(bombs);
         entry.animatealien();
       });
-
       for (var m = 0; m < bombs.length; m++) {
         if(m % 2 == 0) {
           bombs[m].animateshot(true);
@@ -146,7 +137,6 @@ var spaceinvaders = function(ship, sindex) {
           }
         }
       }
-
       if(ship.dead) {
         bombs.forEach(function(entry){
           entry.erase();
@@ -158,7 +148,6 @@ var spaceinvaders = function(ship, sindex) {
   } else {
     spaceinvaders(SpaceInvadersNEAT.population[0], 0);
   }
-
 }
 
 spaceinvaders(SpaceInvadersNEAT.population[0], 0)
